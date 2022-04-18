@@ -1,0 +1,11 @@
+['Id', 'Nombre y apellido', 'Edad', 'Baremo', 
+	'PD Agresividad','T Agresividad', 'Nivel Agresividad',
+       'PD Adaptabilidad', 'T Adaptabilidad','Nivel Adaptabilidad',
+	'PD Ansiedad', 'T Ansiedad','Nivel Ansiedad', 
+	'PD Atipicidad', 'T Atipicidad', 'Nivel Atipicidad', 
+	'PD Depresion','T Depresion', 'Nivel Depresion',
+       'PD Hiperactividad', 'T Hiperactividad', 'Nivel Hiperactividad', 
+	'PD Habilidades sociales', 'T Habilidades sociales','Nivel Habilidades sociales',
+       'PD Problemas de atencion','T Problemas de atencion', 'Nivel Problemas de atencion', 
+	'PD Retraimiento', 'T Retraimiento','Nivel Retraimiento',
+	'PD Somatizacion', 'T Somatizacion', 'Nivel Somatizacion']

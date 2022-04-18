@@ -1,0 +1,150 @@
+{% extends 'base2.html' %}
+
+{% block title %} Informe P1 {% endblock %}
+{% block css_page %}
+    <style type='text/css'>
+        body{
+            font-family: 'Roboto', sans-serif;
+        }
+        .nuevo-estilo {
+            margin: 15px 0px;
+            background-color: #EFEDF1;
+            border: 1px solid #E2E3E8;
+            padding: 10px 1px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <h1 class="text-center">Informe del P1</h1>
+    {% for info in datos %}
+    <div class="row">
+        <div class="col-3 col-sm-2">Nombre:</div>
+        <div class="col-6">{{info.Nombre_y_apellido}}</div>
+    </div>
+    <div class="row">
+        <div class="col-3 col-sm-2">Edad:</div>
+        <div class="col-6">{{info.Edad}}</div>
+    </div>
+
+   <!-- <div class="row">
+
+            <div class="col-2">Baremo:</div>
+        <form method="post" class="row g-6">
+            <div class="col-auto">
+                <div class="input-group">
+                    <input class="form-control-sm" list="datalistOptions" id="baremo_p1" name="baremo_p1" placeholder="Baremo..." value="{{info.Baremo}}">
+                    <datalist id="datalistOptions">
+                      <option value="General">
+                      <option value="Mujeres">
+                      <option value="Varones">
+                    </datalist>
+                    <button type="submit" class="btn btn-outline-primary mb-3">Cambiar baremo</button>
+                </div>
+            </div>
+
+        </form>
+    </div>-->
+    <div class="row">
+        <br>
+            <div class="col-2">Baremo:</div>
+            <form METHOD="post" class="row g-8">
+            <div class="form-group col-6">
+                <select class="form-control" id="baremo_p1" name="baremo_p1">
+                 <option value="">Elegir</option>
+                 {% for value in lista %}
+                    {% if value == info.Baremo %}
+                        <option value="{{ value }}" selected >{{ value }}</option>
+                    {% else %}
+                        <option value="{{ value }}"  >{{ value }}</option>
+                    {% endif %}
+                 {% endfor %}
+                </select>
+
+            </div>
+            <button type="submit" class="btn btn-outline-primary mb-5">Cambiar baremo</button>
+            </form>
+         <br>
+    </div>
+    <div class="nuevo-estilo">
+        <div class="row">
+            <div class="col-4">Escalas Clínicas</div>
+            <div class="col-2">PD</div>
+            <div class="col-2">T</div>
+            <div class="col-4">Clasificación</div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-4">Agresividad</div>
+            <div class="col-2">{{info.PD_Agresividad}}</div>
+            <div class="col-2">{{info.T_Agresividad}}</div>
+            <div class="col-4">{{info.Nivel_Agresividad}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Ansiedad</div>
+            <div class="col-2">{{info.PD_Ansiedad}}</div>
+            <div class="col-2">{{info.T_Ansiedad}}</div>
+            <div class="col-4">{{info.Nivel_Ansiedad}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Atipicidad</div>
+            <div class="col-2">{{info.PD_Atipicidad}}</div>
+            <div class="col-2">{{info.T_Atipicidad}}</div>
+            <div class="col-4">{{info.Nivel_Atipicidad}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Depresión</div>
+            <div class="col-2">{{info.PD_Depresion}}</div>
+            <div class="col-2">{{info.T_Depresion}}</div>
+            <div class="col-4">{{info.Nivel_Depresion}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Hiperactividad</div>
+            <div class="col-2">{{info.PD_Hiperactividad}}</div>
+            <div class="col-2">{{info.T_Hiperactividad}}</div>
+            <div class="col-4">{{info.Nivel_Hiperactividad}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Problemas de atención</div>
+            <div class="col-2">{{info.PD_Problemas_de_atencion}}</div>
+            <div class="col-2">{{info.T_Problemas_de_atencion}}</div>
+            <div class="col-4">{{info.Nivel_Problemas_de_atencion}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Retraimiento</div>
+            <div class="col-2">{{info.PD_Retraimiento}}</div>
+            <div class="col-2">{{info.T_Retraimiento}}</div>
+            <div class="col-4">{{info.Nivel_Retraimiento}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Somatización</div>
+            <div class="col-2">{{info.PD_Somatizacion}}</div>
+            <div class="col-2">{{info.T_Somatizacion}}</div>
+            <div class="col-4">{{info.Nivel_Somatizacion}}</div>
+    </div>
+    <div class="nuevo-estilo">
+        <div class="row">
+            <div class="col-4">Escalas Adaptativas</div>
+            <div class="col-2">PD</div>
+            <div class="col-2">T</div>
+            <div class="col-4">Clasificación</div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-4">Adaptabilidad</div>
+            <div class="col-2">{{info.PD_Adaptabilidad}}</div>
+            <div class="col-2">{{info.T_Adaptabilidad}}</div>
+            <div class="col-4">{{info.Nivel_Adaptabilidad}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Habilidades Sociales</div>
+            <div class="col-2">{{info.PD_Habilidades_sociales}}</div>
+            <div class="col-2">{{info.T_Habilidades_sociales}}</div>
+            <div class="col-4">{{info.Nivel_Habilidades_sociales}}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block js_page %}
+
+{% endblock %}
