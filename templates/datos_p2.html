@@ -1,0 +1,46 @@
+{% extends 'base2.html' %}
+
+{% block title %} BASC P2 {% endblock %}
+
+{% block body %}
+<!-- Card Header - Dropdown -->
+<div class="container">
+    <h1 class="text-center display-1">Test P2 del BASC</h1>
+
+    <table
+          id="table"
+          data-pagination="true"
+          data-search="true"
+          data-toggle="table"
+          data-show-columns="true"
+          data-locale="es-PY"
+          data-show-columns-toggle-all="true"
+    >
+        <thead>
+            <th>Acciones</th>
+            {% for col in columns %}
+            <th data-sortable="true">{{col}}</th>
+
+            {% endfor %}
+
+        </thead>
+        <tbody>
+            {% for row in data %}
+        <tr>
+                {% for col, row_ in zip(columns, row) %}
+                    {% if col == link_column %}
+                    <td>
+                        <a href="{{ url_for('informes',p1_id=row_) }}" class="btn btn-warning btn-circle" role="button" ><i class="far fa-edit">Informe</i></a>
+                    </td>
+                    {% endif %}
+                    <td>{{row_}}</td>
+
+
+                {% endfor %}
+
+        </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

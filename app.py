@@ -4,7 +4,7 @@ from werkzeug.urls import url_parse
 
 from config import DeveloperConfig
 from models import Usuarios, db
-from dataframe_all import dataframe_p1, cambio_baremo_one_p1, p1_dict_one
+from dataframe_all import dataframe_p1, cambio_baremo_one_p1, p1_dict_one, dataframe_p2
 from forms import SignupForm, LoginForm
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 
@@ -18,7 +18,7 @@ db.init_app(app)
 
 #df1 = pd.read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSQ5NCVPoep7GUF5rFwqZ6jcaP84OVob42xcJjaBwo6YmWJM3MT89QmQaavTSo3Eqoi8cgsM1dOPv0S/pub?output=csv")
 df1= dataframe_p1()
-
+df_2 = dataframe_p2()
 @login_manager.user_loader
 def load_user(user_id):
     return Usuarios.get_by_id(int(user_id))
@@ -28,9 +28,20 @@ def load_user(user_id):
 @login_required
 def inicio():
 
-    return render_template('inicio.html',
+    return render_template('datos_p1.html',
                            columns= df1.columns.values,
                            data= list(df1.values.tolist()),
+                           link_column="Id",
+                           zip=zip)
+
+
+@app.route('/p2')
+@login_required
+def basc_p2():
+
+    return render_template('datos_p2.html',
+                           columns= df_2.columns.values,
+                           data= list(df_2.values.tolist()),
                            link_column="Id",
                            zip=zip)
 
