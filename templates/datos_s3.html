@@ -1,12 +1,12 @@
 {% extends 'base2.html' %}
 
-{% block title %} BASC P1 {% endblock %}
+{% block title %} BASC S3 {% endblock %}
 
 {% block body %}
 <!-- Card Header - Dropdown -->
 <div class="container">
-    <h1 class="text-center display-1">Test P1 del BASC</h1>
-    <a class="btn btn-primary" href="/informe" role="button">Ver informe</a>
+    <h1 class="text-center display-1">Test S3 del BASC</h1>
+    <a class="btn btn-primary" href="/test-s3" role="button">Añadir</a>
     <table
           id="table"
           data-pagination="true"
@@ -30,7 +30,7 @@
                 {% for col, row_ in zip(columns, row) %}
                     {% if col == link_column %}
                     <td>
-                        <a href="{{ url_for('informes',p1_id=row_) }}" class="btn btn-warning btn-circle" role="button" ><i class="far fa-edit">Informe</i></a>
+                        <a href="{{ url_for('informes_s3',s3_id=row_) }}" class="btn btn-warning btn-circle" role="button" ><i class="far fa-edit">Informe</i></a>
                     </td>
                     {% endif %}
                     <td>{{row_}}</td>

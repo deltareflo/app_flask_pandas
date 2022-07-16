@@ -9,6 +9,7 @@
 	<!-- HTML5 Shim and Respond.js IE11 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 11]>
+
 		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 		<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 		<![endif]-->
@@ -20,9 +21,9 @@
 	<meta name="keywords"
 		content=" bootstrap 4, dashboard, dashboard templets, responsive, Flash Able bootstrap admin template">
 	<meta name="author" content="Free" />
-
+	{% block head %}
 	<!-- Favicon icon -->
-	<link rel="icon" href="../static/images/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="../static/images/aikumby-logo.ico" type="image/x-icon">
 	<!-- fontawesome icon -->
 	<link rel="stylesheet" href="../static/fonts/fontawesome/css/fontawesome-all.min.css">
 	<!-- animation css -->
@@ -39,8 +40,15 @@
 
   <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">-->
 
-
-
+	{% endblock %}
+	<style>
+		.b-brand {
+			padding: 10px 25px 10px 2px;
+		}
+		.m-header {
+			color: rgb(32, 43, 197);
+		}
+	</style>
 
 	{% block css_page %}  {% endblock %}
 </head>
@@ -62,15 +70,15 @@
 		<div class="navbar-wrapper ">
 			<div class="navbar-brand header-logo">
 				<a href="{{ url_for('inicio') }}" class="b-brand">
-					<img src="../static/images/logo.svg" alt="" class="logo images">
-					<img src="../static/images/logo-icon.svg" alt="" class="logo-thumb images">
+					<img src="../static/images/Aikumby-2.svg" alt="" class="logo images">
+					<img src="../static/images/logo-aikumby.svg" alt="" class="logo-thumb images">
 				</a>
 				<a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
 			</div>
 			<div class="navbar-content scroll-div">
 				<ul class="nav pcoded-inner-navbar">
 					<li class="nav-item pcoded-menu-caption">
-						<label>Navigation</label>
+						<label>Navegación</label>
 					</li>
 					<li class="nav-item">
 						<a href="{{ url_for('inicio') }}" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Panel general</span></a>
@@ -83,6 +91,8 @@
 						<ul class="pcoded-submenu">
 							<li class=""><a href="{{ url_for('inicio') }}" class="">Test P1</a></li>
 							<li class=""><a href="{{ url_for('basc_p2') }}" class="">Test P2</a></li>
+							<li class=""><a href="{{ url_for('basc_p3') }}" class="">Test P3</a></li>
+							<li class=""><a href="{{ url_for('basc_s3') }}" class="">Test S3</a></li>
 							<!--<li class=""><a href="bc_badges.html" class="">Badges</a></li>
 							<li class=""><a href="bc_breadcrumb-pagination.html" class="">Breadcrumb & paggination</a></li>
 							<li class=""><a href="bc_collapse.html" class="">Collapse</a></li>
@@ -91,6 +101,22 @@
 							<li class=""><a href="bc_typography.html" class="">Typography</a></li>-->
 						</ul>
 					</li>
+					{% if current_user.is_admin %}
+						<li class="nav-item pcoded-hasmenu">
+							<a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-align-justify"></i></span><span class="pcoded-mtext">Seguimiento</span></a>
+							<ul class="pcoded-submenu">
+								<li class=""><a href="{{ url_for('all_usuario') }}" class="">Ver usuarios</a></li>
+								<li class=""><a href="{{ url_for('all_contacto') }}" class="">Ver contacto</a></li>
+								<li class=""><a href="{{ url_for('all_consulta') }}" class="">Ver primeras consultas</a></li>
+								<li class=""><a href="{{ url_for('all_tipo') }}" class="">Ver tipo evaluación</a></li>
+								<li class=""><a href="{{ url_for('all_evaluacion') }}" class="">Ver evaluación</a></li>
+								<li class=""><a href="{{ url_for('all_resultado') }}" class="">Ver resultado</a></li>
+								<li class=""><a href="{{ url_for('all_tipo_acomp') }}" class="">Ver tipo acompañamiento</a></li>
+								<li class=""><a href="{{ url_for('all_acomp') }}" class="">Ver acompañamiento</a></li>
+								<li class=""><a href="{{ url_for('all_info') }}" class="">Ver info seguimiento</a></li>
+							</ul>
+						</li>
+					{% endif %}
 					<!--<li class="nav-item pcoded-menu-caption">
 						<label>Forms &amp; table</label>
 					</li>
@@ -134,8 +160,8 @@
 		<div class="m-header">
 			<a class="mobile-menu" id="mobile-collapse1" href="#!"><span></span></a>
 			<a href="{{ url_for('inicio') }}" class="b-brand">
-				<img src="../static/images/logo.svg" alt="" class="logo images">
-				<img src="../static/images/logo-icon.svg" alt="" class="logo-thumb images">
+				<img src="../static/images/Aikumby-2.svg" alt="" class="logo images">
+				<img src="../static/images/logo-aikumby.svg" alt="" class="logo-thumb images">
 			</a>
 		</div>
 		<a class="mobile-menu" id="mobile-header" href="#!">
@@ -274,6 +300,7 @@
 				<div class="pcoded-inner-content">
 					<div class="main-body">
 						{% block body %}
+
 						<!--<div class="page-wrapper">-->
 							<!-- [ breadcrumb ] start -->
 							<!--<div class="page-header">
@@ -857,6 +884,15 @@
 	</div>
 	<!-- [ Main Content ] end -->
 	{% endblock %}
+	{% with messages = get_flashed_messages() %}
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endif%}
+	{% endwith %}
 	{% block login %} {% endblock %}
 	<!-- Warning Section start -->
 	<!-- Older IE warning message -->

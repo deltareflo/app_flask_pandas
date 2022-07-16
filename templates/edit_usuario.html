@@ -1,0 +1,122 @@
+{% extends 'base2.html' %}
+{% block title %}Edita usuario{% endblock %}
+
+{% block body %}
+<!-- [ auth-signin ] start -->
+<div class="auth-wrapper">
+	<div class="auth-content container">
+		<div class="card">
+			<div class="row align-items-center justify-content-center">
+
+						<form action="" method="post" id="formul" novalidate>
+						{{ form.hidden_tag() }}
+						<div class="input-group mb-2">
+							<h4 class="mb-3 f-w-400">Editar datos paciente</h4>
+						</div>
+
+						<div class="input-group mb-2">
+
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-users"></i></span>
+							</div>
+							{{ form.nombre(class_= "form-control", size=64, value=contacts.nombre) }}
+<!--							<input type="email" class="form-control" placeholder="Email address">-->
+							{% for error in form.nombre.errors %}
+                        		<span style="color: red;">{{ error }}</span>
+                        	{% endfor %}
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-hash"></i></span>
+							</div>
+							{{ form.edad(class_= "form-control", size=64, value=contacts.edad) }}<br>
+							{% for error in form.edad.errors %}
+								<span style="color: red;">{{ error }}</span>
+							{% endfor %}
+<!--							<input type="password" class="form-control" placeholder="Password">-->
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-edit"></i></span>
+							</div>
+							{{ form.grado(class_= "form-control", size=64 , value=contacts.grado) }}<br>
+							{% for error in form.grado.errors %}
+								<span style="color: red;">{{ error }}</span>
+							{% endfor %}
+<!--							<input type="password" class="form-control" placeholder="Password">-->
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-map"></i></span>
+							</div>
+							{{ form.localidad(class_= "form-control", size=64, value=contacts.localidad) }}<br>
+							{% for error in form.localidad.errors %}
+								<span style="color: red;">{{ error }}</span>
+							{% endfor %}
+<!--							<input type="password" class="form-control" placeholder="Password">-->
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-mail"></i></span>
+							</div>
+							{{ form.email(class_= "form-control", size=64, value=contacts.email) }}<br>
+							{% for error in form.email.errors %}
+								<span style="color: red;">{{ error }}</span>
+							{% endfor %}
+<!--							<input type="password" class="form-control" placeholder="Password">-->
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-folder"></i></span>
+							</div>
+							{{ form.carpeta(class_= "form-control", size=64, value=contacts.carpeta) }}<br>
+							{% for error in form.carpeta.errors %}
+								<span style="color: red;">{{ error }}</span>
+							{% endfor %}
+<!--							<input type="password" class="form-control" placeholder="Password">-->
+						</div>
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-user-plus"></i></span>
+							</div>
+							{{ form.contacto(class_= "form-control") }} <a class="btn btn-success" href="{{ url_for('contacto') }}" role="button">Añadir nuevo</a><br>
+							{% for error in form.contacto.errors %}
+								<span style="color: red;">{{ error }}</span>
+							{% endfor %}
+<!--							<input type="password" class="form-control" placeholder="Password">-->
+						</div>
+
+						{{ form.submit(class_= "btn btn-primary mb-4") }}
+							<!--<button class="btn btn-primary mb-4">Login</button>-->
+
+						</form>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- [ auth-signin ] end -->
+{% endblock %}
+{% block js_page %}
+
+{% endblock %}
+<!-- Required Js -->
+<!--<script src="../assets/js/vendor-all.min.js"></script>
+<script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+
+<div class="footer-fab">
+    <div class="b-bg">
+        <i class="fas fa-question"></i>
+    </div>
+    <div class="fab-hover">
+        <ul class="list-unstyled">
+            <li><a href="../doc/index-bc-package.html" target="_blank" data-text="UI Kit" class="btn btn-icon btn-rounded btn-info m-0"><i class="feather icon-layers"></i></a></li>
+            <li><a href="../doc/index.html" target="_blank" data-text="Document" class="btn btn-icon btn-rounded btn-primary m-0"><i class="feather icon feather icon-book"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+
+</body>
+
+</html>-->

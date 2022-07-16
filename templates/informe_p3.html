@@ -1,6 +1,6 @@
 {% extends 'base2.html' %}
 
-{% block title %} Informe P2 {% endblock %}
+{% block title %} Informe P3 {% endblock %}
 {% block css_page %}
     <style type='text/css'>
         body{
@@ -16,7 +16,7 @@
 {% endblock %}
 {% block body %}
 <div class="container">
-    <h1 class="text-center">Informe del P2</h1>
+    <h1 class="text-center">Informe del P3</h1>
     {% for info in datos %}
     <div class="row">
         <div class="col-3 col-sm-2">Nombre:</div>
@@ -50,7 +50,7 @@
             <div class="col-2">Baremo:</div>
             <form METHOD="post" class="row g-8">
             <div class="form-group col-6">
-                <select class="form-control" id="baremo_p2" name="baremo_p2">
+                <select class="form-control" id="baremo_p3" name="baremo_p3">
                  <option value="">Elegir</option>
                  {% for value in lista %}
                     {% if value == info.Baremo %}
@@ -111,6 +111,12 @@
             <div class="col-4">{{info.Nivel_Problemas_de_atencion}}</div>
     </div>
     <div class="row">
+            <div class="col-4">Problemas de conducta</div>
+            <div class="col-2">{{info.PD_Problemas_de_conducta}}</div>
+            <div class="col-2">{{info.T_Problemas_de_conducta}}</div>
+            <div class="col-4">{{info.Nivel_Problemas_de_conducta}}</div>
+    </div>
+    <div class="row">
             <div class="col-4">Retraimiento</div>
             <div class="col-2">{{info.PD_Retraimiento}}</div>
             <div class="col-2">{{info.T_Retraimiento}}</div>
@@ -122,12 +128,6 @@
             <div class="col-2">{{info.T_Somatizacion}}</div>
             <div class="col-4">{{info.Nivel_Somatizacion}}</div>
     </div>
-    <div class="row">
-            <div class="col-4">Problema de conducta</div>
-            <div class="col-2">{{info.PD_Problemas_de_conducta}}</div>
-            <div class="col-2">{{info.T_Problemas_de_conducta}}</div>
-            <div class="col-4">{{info.Nivel_Problemas_de_conducta}}</div>
-    </div>
     <div class="nuevo-estilo">
         <div class="row">
             <div class="col-4">Escalas Adaptativas</div>
@@ -137,22 +137,16 @@
         </div>
     </div>
     <div class="row">
-            <div class="col-4">Adaptabilidad</div>
-            <div class="col-2">{{info.PD_Adaptabilidad}}</div>
-            <div class="col-2">{{info.T_Adaptabilidad}}</div>
-            <div class="col-4">{{info.Nivel_Adaptabilidad}}</div>
+            <div class="col-4">Liderazgo</div>
+            <div class="col-2">{{info.PD_Liderazgo}}</div>
+            <div class="col-2">{{info.T_Liderazgo}}</div>
+            <div class="col-4">{{info.Nivel_Liderazgo}}</div>
     </div>
     <div class="row">
             <div class="col-4">Habilidades Sociales</div>
             <div class="col-2">{{info.PD_Habilidades_sociales}}</div>
             <div class="col-2">{{info.T_Habilidades_sociales}}</div>
             <div class="col-4">{{info.Nivel_Habilidades_sociales}}</div>
-    </div>
-    <div class="row">
-            <div class="col-4">Liderazgo</div>
-            <div class="col-2">{{info.PD_Liderazgo}}</div>
-            <div class="col-2">{{info.T_Liderazgo}}</div>
-            <div class="col-4">{{info.Nivel_Liderazgo}}</div>
     </div>
     {% endfor %}
 </div>

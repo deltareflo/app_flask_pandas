@@ -1,0 +1,81 @@
+{% extends 'base2.html' %}
+{% block title %}Usuarios{% endblock %}
+
+{% block body %}
+<!-- [ auth-signin ] start -->
+<div class="container">
+    <h1 class="h1 align-items-center">Usuarios Seguimiento</h1>
+    <a class="btn btn-primary" href="{{ url_for('usuario') }}" role="button">Añadir usuario</a>
+    <table
+          id="table"
+          data-pagination="true"
+          data-search="true"
+          data-toggle="table"
+          data-show-columns="true"
+          data-locale="es-PY"
+          data-show-columns-toggle-all="true"
+    >
+        <thead>
+            <th>Acciones</th>
+
+            <th data-sortable="true">Nombre</th>
+            <th data-sortable="true">Edad</th>
+            <th data-sortable="true">Grado</th>
+            <th data-sortable="true">Localidad</th>
+            <th data-sortable="true">Email</th>
+            <th data-sortable="true">Contacto</th>
+
+        </thead>
+        <tbody>
+        {% for user in users %}
+        <tr>
+
+                <td>
+                {% for contact in contactos %}
+                {% if contact[0] == user.id_contacto %}
+                    <a href="{{ url_for('edit_usuario',u1_id=user.id) }}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Editar</i></a>
+                    <a href="https://wa.me/{{contact[2]}}" class="btn btn-info btn-circle" role="button" ><i class="far fa-id-badge"> Enviar msj</i></a>
+                    <a href="{{ url_for('seguimiento',s1_id=user.id) }}" class="btn btn-primary btn-circle" role="button" ><i class="far fa-eye"> Ver</i></a>
+
+                </td>
+                <td>{{user.nombre}}</td>
+                <td>{{user.edad}}</td>
+                <td>{{user.grado}}</td>
+                <td>{{user.localidad}}</td>
+                <td>{{user.email}}</td>
+                <td>
+
+                            {{ contact[1] }}
+                {% endif %}
+
+                {% endfor %}
+                </td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
+<!-- Required Js -->
+<!--<script src="../assets/js/vendor-all.min.js"></script>
+<script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+
+<div class="footer-fab">
+    <div class="b-bg">
+        <i class="fas fa-question"></i>
+    </div>
+    <div class="fab-hover">
+        <ul class="list-unstyled">
+            <li><a href="../doc/index-bc-package.html" target="_blank" data-text="UI Kit" class="btn btn-icon btn-rounded btn-info m-0"><i class="feather icon-layers"></i></a></li>
+            <li><a href="../doc/index.html" target="_blank" data-text="Document" class="btn btn-icon btn-rounded btn-primary m-0"><i class="feather icon feather icon-book"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+
+</body>
+
+</html>-->

@@ -1,0 +1,187 @@
+{% extends 'base2.html' %}
+
+{% block title %} Seguimiento {% endblock %}
+{% block css_page %}
+    <style type='text/css'>
+        body{
+            font-family: 'Roboto', sans-serif;
+        }
+        .nuevo-estilo {
+            margin: 15px 0px;
+            background-color: #EFEDF1;
+            border: 1px solid #E2E3E8;
+            padding: 10px 1px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+<div class="container">
+
+    <!--<blockquote class="imgur-embed-pub" lang="en" data-id="a/YhxqhOT" data-context="false" ><a href="//imgur.com/a/YhxqhOT"></a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>-->
+    <img src="https://imgur.com/TmLGEcn" alt="logo">
+    <h1 class="text-center">Seguimiento</h1>
+    <a href="{{user.carpeta}}" class="btn btn-primary btn-circle btn-sm" role="button" ><i class="fab fa-google-drive">Ver carpeta</i></a>
+    <div class="row">
+        <div class="col-4 col-sm-2">Nombre:</div>
+        <div class="col-6">{{user.nombre}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Edad:</div>
+        <div class="col-6">{{user.edad}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Grado:</div>
+        <div class="col-6">{{user.grado}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Localidad:</div>
+        <div class="col-6">{{user.localidad}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Email:</div>
+        <div class="col-6">{{user.email}}</div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-4 col-sm-2">Nombre contacto:</div>
+        <div class="col-6">{{contact.nombre}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Whatsapp contacto:</div>
+        <div class="col-6">{{contact.telefono}}</div>
+        {% if current_user.is_admin %}
+            <a href="https://wa.me/{{contact.telefono}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Enviar msj</i></a>
+        {% endif %}
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-4 col-sm-2">Fecha primera consulta:</div>
+        <div class="col-6">{{consulta.fecha.strftime('%d/%m/%Y')}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Profesional:</div>
+        <div class="col-6">{{consulta.profesional}}</div>
+         {% if current_user.is_admin %}
+            {% if not consulta.id %}
+                <a href="{{ url_for('add_consulta', user_id=user.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Agregar consulta</i></a>
+            {% else %}
+                <a href="{{ url_for('edit_consulta', pr_id=consulta.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Editar consulta</i></a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <br>
+    <h3 class="text-center">Evaluación</h3>
+    {% if evaluacion %}
+    <div class="row">
+        <div class="col-4 col-sm-2">Fecha evaluación:</div>
+        <div class="col-6">{{evaluacion.fecha.strftime('%d/%m/%Y')}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Profesionales:</div>
+        <div class="col-6">{{evaluacion.profesionales}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Tipo evaluación:</div>
+        <div class="col-6">{{tipo_eval.evaluacion}}</div>
+    {% endif %}
+    {% if current_user.is_admin %}
+         {% if not evaluacion.id %}
+             <a href="{{ url_for('add_evaluacion', user_id=user.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Agregar evaluacion</i></a>
+         {% else %}
+             <a href="{{ url_for('edit_evaluacion', ev_id=consulta.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Editar evaluacion</i></a>
+         {% endif %}
+    {% endif %}
+    </div>
+    <br>
+    <h3 class="text-center">Resultado</h3>
+    {% if resultado %}
+    <div class="row">
+        <div class="col-4 col-sm-2">Fecha devolución:</div>
+        <div class="col-6">{{resultado.fecha.strftime('%d/%m/%Y')}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Comentario:</div>
+        <div class="col-6">{{resultado.comentario}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Altas capacidades:</div>
+        <div class="col-6">{{resultado.aa_cc}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Doble excepcionalidad:</div>
+        <div class="col-6">{{resultado.excepcionalidad}}</div>
+    </div>
+    <div class="row">
+        <div class="col-4 col-sm-2">Recomendación:</div>
+        <div class="col-6">{{resultado.recomendacion}}</div>
+    {% endif %}
+    {% if current_user.is_admin %}
+         {% if not resultado.id %}
+             <a href="{{ url_for('add_resultado', user_id=user.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Agregar resultado</i></a>
+         {% else %}
+             <a href="{{ url_for('edit_resultado', rs_id=consulta.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Editar resultado</i></a>
+         {% endif %}
+    {% endif %}
+    </div>
+    <br>
+    <h3 class="text-center">Acompañamiento</h3>
+
+    <div class="row">
+        <div class="col-4 col-sm-2">Fecha inicio:</div>
+        <div class="col-4 col-sm-2">Encargada:</div>
+        <div class="col-4 col-sm-2">Tipo de acompañamiento:</div>
+        <div class="col-4 col-sm-2">Modalidad:</div>
+        <div class="col-4 col-sm-2">Comentario:</div>
+        <div class="col-4 col-sm-2">Acciones:</div>
+    </div>
+    {% if acompa %}
+        {% for acom in acompa %}
+        <div class="row">
+            <div class="col-4 col-sm-2">{{acom.fecha_inicio.strftime('%d/%m/%Y')}}</div>
+            <div class="col-4 col-sm-2">{{acom.encargado}}</div>
+            {% for tipo in tipo_acomp%}
+                {% if tipo.id == acomp.id_tipo %}
+                <div class="col-4 col-sm-2">{{tipo.tipo}}</div>
+                {% endif %}
+            {% endfor %}
+            <div class="col-4 col-sm-2">{{acom.modalidad}}</div>
+            <div class="col-4 col-sm-2">{{acom.comentario}}</div>
+            {% if current_user.is_admin %}
+                <div class="col-4 col-sm-2"><a href="{{ url_for('edit_acomp', ac_id=acom.id)}}" class="btn btn-success btn-circle btn-sm" role="button" ><i class="far fa-edit">Editar</i></a></div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    {% else %}
+        {% if current_user.is_admin %}
+             <a href="{{ url_for('add_acomp', user_id=user.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Agregar</i></a>
+        {% endif %}
+    {% endif %}
+    <br>
+    <h3 class="text-center">Información seguimiento</h3>
+
+    <div class="row">
+        <div class="col-4 col-sm-2">Fecha</div>
+        <div class="col-6 col-sm-6">Info de seguimiento</div>
+        <div class="col-6 col-sm-6">Info de seguimiento</div>
+    </div>
+    {% if infos %}
+        {% for info in infos %}
+        <div class="row">
+            <div class="col-4 col-sm-2">{{info.fecha_creado.strftime('%d/%m/%Y')}}</div>
+            <div class="col-6 col-sm-6">{{info.info}}</div>
+        </div>
+         {% if current_user.is_admin %}
+             <div class="col-6 col-sm-6"><a href="{{ url_for('edit_acomp', if_id=info.id)}}" class="btn btn-success btn-circle btn-sm" role="button" ><i class="far fa-edit">Editar</i></a></div>
+         {% endif %}
+        {% endfor %}
+    {% else %}
+        {% if current_user.is_admin %}
+              <a href="{{ url_for('add_acomp', user_id=user.id)}}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Agregar</i></a>
+        {% endif %}
+    {% endif %}
+
+</div>
+{% endblock %}
+{% block js_page %}
+
+{% endblock %}

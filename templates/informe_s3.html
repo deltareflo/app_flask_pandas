@@ -1,6 +1,6 @@
 {% extends 'base2.html' %}
 
-{% block title %} Informe P2 {% endblock %}
+{% block title %} Informe S3 {% endblock %}
 {% block css_page %}
     <style type='text/css'>
         body{
@@ -16,7 +16,7 @@
 {% endblock %}
 {% block body %}
 <div class="container">
-    <h1 class="text-center">Informe del P2</h1>
+    <h1 class="text-center">Informe del S3</h1>
     {% for info in datos %}
     <div class="row">
         <div class="col-3 col-sm-2">Nombre:</div>
@@ -50,7 +50,7 @@
             <div class="col-2">Baremo:</div>
             <form METHOD="post" class="row g-8">
             <div class="form-group col-6">
-                <select class="form-control" id="baremo_p2" name="baremo_p2">
+                <select class="form-control" id="baremo_s3" name="baremo_s3">
                  <option value="">Elegir</option>
                  {% for value in lista %}
                     {% if value == info.Baremo %}
@@ -75,10 +75,16 @@
         </div>
     </div>
     <div class="row">
-            <div class="col-4">Agresividad</div>
-            <div class="col-2">{{info.PD_Agresividad}}</div>
-            <div class="col-2">{{info.T_Agresividad}}</div>
-            <div class="col-4">{{info.Nivel_Agresividad}}</div>
+            <div class="col-4">Actitud negativa hacia los profesores</div>
+            <div class="col-2">{{info.PD_Actitud_negativa_hacia_los_profesores}}</div>
+            <div class="col-2">{{info.T_Actitud_negativa_hacia_los_profesores}}</div>
+            <div class="col-4">{{info.Nivel_Actitud_negativa_hacia_los_profesores}}</div>
+    </div>
+    <div class="row">
+            <div class="col-4">Actitud negativa hacia el colegio</div>
+            <div class="col-2">{{info.PD_Actitud_negativa_hacia_el_colegio}}</div>
+            <div class="col-2">{{info.T_Actitud_negativa_hacia_el_colegio}}</div>
+            <div class="col-4">{{info.Nivel_Actitud_negativa_hacia_el_colegio}}</div>
     </div>
     <div class="row">
             <div class="col-4">Ansiedad</div>
@@ -99,22 +105,22 @@
             <div class="col-4">{{info.Nivel_Depresion}}</div>
     </div>
     <div class="row">
-            <div class="col-4">Hiperactividad</div>
-            <div class="col-2">{{info.PD_Hiperactividad}}</div>
-            <div class="col-2">{{info.T_Hiperactividad}}</div>
-            <div class="col-4">{{info.Nivel_Hiperactividad}}</div>
+            <div class="col-4">Locus de control</div>
+            <div class="col-2">{{info.PD_Locus_de_control}}</div>
+            <div class="col-2">{{info.T_Locus_de_control}}</div>
+            <div class="col-4">{{info.Nivel_Locus_de_control}}</div>
     </div>
     <div class="row">
-            <div class="col-4">Problemas de atención</div>
-            <div class="col-2">{{info.PD_Problemas_de_atencion}}</div>
-            <div class="col-2">{{info.T_Problemas_de_atencion}}</div>
-            <div class="col-4">{{info.Nivel_Problemas_de_atencion}}</div>
+            <div class="col-4">Estrés social</div>
+            <div class="col-2">{{info.PD_Estres_social}}</div>
+            <div class="col-2">{{info.T_Estres_social}}</div>
+            <div class="col-4">{{info.Nivel_Estres_social}}</div>
     </div>
     <div class="row">
-            <div class="col-4">Retraimiento</div>
-            <div class="col-2">{{info.PD_Retraimiento}}</div>
-            <div class="col-2">{{info.T_Retraimiento}}</div>
-            <div class="col-4">{{info.Nivel_Retraimiento}}</div>
+            <div class="col-4">Sentido de incapacidad</div>
+            <div class="col-2">{{info.PD_Sentido_de_incapacidad}}</div>
+            <div class="col-2">{{info.T_Sentido_de_incapacidad}}</div>
+            <div class="col-4">{{info.Nivel_Sentido_de_incapacidad}}</div>
     </div>
     <div class="row">
             <div class="col-4">Somatización</div>
@@ -123,10 +129,10 @@
             <div class="col-4">{{info.Nivel_Somatizacion}}</div>
     </div>
     <div class="row">
-            <div class="col-4">Problema de conducta</div>
-            <div class="col-2">{{info.PD_Problemas_de_conducta}}</div>
-            <div class="col-2">{{info.T_Problemas_de_conducta}}</div>
-            <div class="col-4">{{info.Nivel_Problemas_de_conducta}}</div>
+            <div class="col-4">Búsqueda de sensaciones</div>
+            <div class="col-2">{{info.PD_Busqueda_de_sensaciones}}</div>
+            <div class="col-2">{{info.T_Busqueda_de_sensaciones}}</div>
+            <div class="col-4">{{info.Nivel_Busqueda_de_sensaciones}}</div>
     </div>
     <div class="nuevo-estilo">
         <div class="row">
@@ -137,23 +143,33 @@
         </div>
     </div>
     <div class="row">
-            <div class="col-4">Adaptabilidad</div>
-            <div class="col-2">{{info.PD_Adaptabilidad}}</div>
-            <div class="col-2">{{info.T_Adaptabilidad}}</div>
-            <div class="col-4">{{info.Nivel_Adaptabilidad}}</div>
+            <div class="col-4">Relaciones interpersonales</div>
+            <div class="col-2">{{info.PD_Relaciones_interpersonales}}</div>
+            <div class="col-2">{{info.T_Relaciones_interpersonales}}</div>
+            <div class="col-4">{{info.Nivel_Relaciones_interpersonales}}</div>
     </div>
     <div class="row">
-            <div class="col-4">Habilidades Sociales</div>
-            <div class="col-2">{{info.PD_Habilidades_sociales}}</div>
-            <div class="col-2">{{info.T_Habilidades_sociales}}</div>
-            <div class="col-4">{{info.Nivel_Habilidades_sociales}}</div>
+            <div class="col-4">Relaciones con los padres</div>
+            <div class="col-2">{{info.PD_Relaciones_con_los_padres}}</div>
+            <div class="col-2">{{info.T_Relaciones_con_los_padres}}</div>
+            <div class="col-4">{{info.Nivel_Relaciones_con_los_padres}}</div>
     </div>
     <div class="row">
-            <div class="col-4">Liderazgo</div>
-            <div class="col-2">{{info.PD_Liderazgo}}</div>
-            <div class="col-2">{{info.T_Liderazgo}}</div>
-            <div class="col-4">{{info.Nivel_Liderazgo}}</div>
+            <div class="col-4">Autoestima</div>
+            <div class="col-2">{{info.PD_Autoestima}}</div>
+            <div class="col-2">{{info.T_Autoestima}}</div>
+            <div class="col-4">{{info.Nivel_Autoestima}}</div>
     </div>
+    <div class="row">
+            <div class="col-4">Confianza en sí mismo</div>
+            <div class="col-2">{{info.PD_Confianza_en_si_mismo}}</div>
+            <div class="col-2">{{info.T_Confianza_en_si_mismo}}</div>
+            <div class="col-4">{{info.Nivel_Confianza_en_si_mismo}}</div>
+    </div>
+    <div class="row">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfIFf5J9ToiEtwsFrWcxwxvbWXbv0S1_SRV2CVEdRZnECkChA/viewform?embedded=true" width="640" height="987" frameborder="0" marginheight="0" marginwidth="0">Cargando…</iframe>
+    </div>
+
     {% endfor %}
 </div>
 {% endblock %}

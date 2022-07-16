@@ -30,7 +30,7 @@
                 {% for col, row_ in zip(columns, row) %}
                     {% if col == link_column %}
                     <td>
-                        <a href="{{ url_for('informes',p1_id=row_) }}" class="btn btn-warning btn-circle" role="button" ><i class="far fa-edit">Informe</i></a>
+                        <a href="{{ url_for('informes_p2',p2_id=row_) }}" class="btn btn-warning btn-circle" role="button" ><i class="far fa-edit">Informe</i></a>
                     </td>
                     {% endif %}
                     <td>{{row_}}</td>

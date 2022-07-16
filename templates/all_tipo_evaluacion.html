@@ -1,0 +1,61 @@
+{% extends 'base2.html' %}
+{% block title %}Tipo Evaluacion{% endblock %}
+
+{% block body %}
+<!-- [ auth-signin ] start -->
+<div class="container">
+    <h1 class="h1 align-items-center">Tipo Evaluación</h1>
+    <a class="btn btn-primary" href="{{ url_for('add_tipo_eval') }}" role="button">Añadir tipo</a>
+    <table
+          id="table"
+          data-pagination="true"
+          data-search="true"
+          data-toggle="table"
+          data-show-columns="true"
+          data-locale="es-PY"
+          data-show-columns-toggle-all="true"
+    >
+        <thead>
+            <th>Acciones</th>
+
+            <th data-sortable="true">Tipo evaluación</th>
+
+        </thead>
+        <tbody>
+        {% for tipo in tipos %}
+        <tr>
+
+                <td>
+                    <a href="{{ url_for('edit_tipos',te_id=tipo.id) }}" class="btn btn-success btn-circle btn-sm" role="button" ><i class="far fa-edit">Editar</i></a>
+
+                </td>
+                <td>{{ tipo.evaluacion }}</td>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
+<!-- Required Js -->
+<!--<script src="../assets/js/vendor-all.min.js"></script>
+<script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+
+<div class="footer-fab">
+    <div class="b-bg">
+        <i class="fas fa-question"></i>
+    </div>
+    <div class="fab-hover">
+        <ul class="list-unstyled">
+            <li><a href="../doc/index-bc-package.html" target="_blank" data-text="UI Kit" class="btn btn-icon btn-rounded btn-info m-0"><i class="feather icon-layers"></i></a></li>
+            <li><a href="../doc/index.html" target="_blank" data-text="Document" class="btn btn-icon btn-rounded btn-primary m-0"><i class="feather icon feather icon-book"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+
+</body>
+
+</html>-->

@@ -1,0 +1,77 @@
+{% extends 'base2.html' %}
+{% block title %}Informe{% endblock %}
+
+{% block body %}
+<!-- [ auth-signin ] start -->
+<div class="container">
+    <h1 class="h1 align-items-center">Informe Resultados</h1>
+    <a class="btn btn-primary" href="{{ url_for('add_resultado') }}" role="button">Añadir Resultados</a>
+    <table
+          id="table"
+          data-pagination="true"
+          data-search="true"
+          data-toggle="table"
+          data-show-columns="true"
+          data-locale="es-PY"
+          data-show-columns-toggle-all="true"
+    >
+        <thead>
+            <th>Acciones</th>
+
+            <th data-sortable="true">Nombre</th>
+            <th data-sortable="true">Fecha Devolución</th>
+            <th data-sortable="true">Comentario</th>
+            <th data-sortable="true">Altas Capacidades</th>
+            <th data-sortable="true">Doble excepcionalidad</th>
+            <th data-sortable="true">Recomendaciones</th>
+
+        </thead>
+        <tbody>
+        {% for resultado in resultados %}
+        <tr>
+
+                <td>
+                {% for user in users %}
+                {% if user[0] == resultado.id_user %}
+                    <a href="{{ url_for('edit_resultado',rs_id=resultado.id) }}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Editar</i></a>
+
+                </td>
+                <td>{{ user[1] }}</td>
+                <td>{{resultado.fecha}}</td>
+                <td>{{resultado.comentario}}</td>
+                <td>{{resultado.aa_cc}}</td>
+                <td>{{resultado.excepcionalidad}}</td>
+                <td>{{resultado.recomendacion}}</td>
+                {% endif %}
+
+                {% endfor %}
+
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
+<!-- Required Js -->
+<!--<script src="../assets/js/vendor-all.min.js"></script>
+<script src="../assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+
+
+<div class="footer-fab">
+    <div class="b-bg">
+        <i class="fas fa-question"></i>
+    </div>
+    <div class="fab-hover">
+        <ul class="list-unstyled">
+            <li><a href="../doc/index-bc-package.html" target="_blank" data-text="UI Kit" class="btn btn-icon btn-rounded btn-info m-0"><i class="feather icon-layers"></i></a></li>
+            <li><a href="../doc/index.html" target="_blank" data-text="Document" class="btn btn-icon btn-rounded btn-primary m-0"><i class="feather icon feather icon-book"></i></a></li>
+        </ul>
+    </div>
+</div>
+
+
+</body>
+
+</html>-->

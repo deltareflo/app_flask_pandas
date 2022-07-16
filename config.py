@@ -13,3 +13,4 @@ class DeveloperConfig():
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = 'sqlite:///{}/dbase.db'.format(PWD)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    POSTS_PER_PAGE = 3
