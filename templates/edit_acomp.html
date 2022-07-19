@@ -38,7 +38,7 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="feather icon-user"></i> Encargada</span>
 							</div>
-							{{ form.encargado(class_= "form-control", value=acomp.encargado) }} <br>
+							{{ form.encargado(class_= "form-control") }} <br>
 							{% for error in form.encargado.errors %}
 								<span style="color: red;">{{ error }}</span>
 							{% endfor %}
@@ -68,7 +68,8 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="feather icon-clipboard"></i> Comentario</span>
 							</div>
-							{{ form.comentario(class_= "form-control", value=acomp.comentario) }} <br>
+							{% set f = form.comentario.process_data(acomp.comentario) %}
+							{{ form.comentario(class_= "form-control") }} <br>
 							{% for error in form.comentario.errors %}
 								<span style="color: red;">{{ error }}</span>
 							{% endfor %}

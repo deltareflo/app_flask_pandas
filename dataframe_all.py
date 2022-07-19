@@ -822,8 +822,8 @@ def dataframe_s3():
 def dataframe_s2():
     # Se declara la url de la cual se va a leer los datos
 
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR25wTAMvC1MoJFfbregZx1ngybD6mzYA3u" \
-          "-hytaRMvlYWM4RKJC7yYqr2KWzfYuEXcrvBE4-pmcGyA/pubhtml "
+    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1-GbOxaijA7BRMixTuoRynuQiYXyfjsPUlGx5CzHm" \
+          "-TSTev5PWP03YEQLrR00aMRKxfsof3fc4ul2/pubhtml "
     df = dataframe_calculos_iniciales(url, prueba="S2")
     # df = recodifica_var(len(df.columns))
     df_info = df.iloc[:, :11]
@@ -1480,7 +1480,7 @@ if __name__ == '__main__':
     #df = cargar_dataframe(url)
     #df = dataframe_calculos_iniciales(url)
     #df = df.iloc[:, 11:]
-    frame_p2 = dataframe_p3()
+    frame_p2 = dataframe_s2()
     """id_p1 = 3
     barem_p1 = "General"
     datos_finales = cambio_baremo_one_p1(frame_p1,id_p1, barem_p1)
@@ -1493,5 +1493,5 @@ if __name__ == '__main__':
     #convertir_pickle(archivo="P3_Var_15_16")
     print(frame_p2.columns)
     print(frame_p2.iloc[:, [1,3,4]])
-    print(frame_p2['T Habilidades sociales'])
+    print(frame_p2.iloc[:, [2]])
 

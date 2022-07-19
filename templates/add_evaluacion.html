@@ -46,15 +46,24 @@
 						</div>
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
-								<span class="input-group-text"><i class="feather icon-plus"></i>Profesionales</span>
+								<span class="input-group-text"><i class="feather icon-plus-square"></i> Profesional 1</span>
 							</div>
-							{{ form.profesionales(class_= "form-control", size=64) }}<br>
-							{% for error in form.profesionales.errors %}
+							{{ form.profesional1(class_= "form-control") }} <a class="btn btn-success" href="{{ url_for('add_prof') }}" role="button">Añadir nuevo</a><br><br>
+							{% for error in form.profesional1.errors %}
 								<span style="color: red;">{{ error }}</span>
 							{% endfor %}
 <!--							<input type="password" class="form-control" placeholder="Password">-->
 						</div>
-
+						<div class="input-group mb-3">
+							<div class="input-group-prepend">
+								<span class="input-group-text"><i class="feather icon-plus-circle"></i> Profesional 2</span>
+							</div>
+							{{ form.profesional2(class_= "form-control") }} <br>
+							{% for error in form.profesional2.errors %}
+								<span style="color: red;">{{ error }}</span>
+							{% endfor %}
+<!--							<input type="password" class="form-control" placeholder="Password">-->
+						</div>
 						{{ form.submit(class_= "btn btn-primary mb-4") }}
 							<!--<button class="btn btn-primary mb-4">Login</button>-->
 

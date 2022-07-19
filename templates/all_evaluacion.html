@@ -21,7 +21,8 @@
             <th data-sortable="true">Nombre</th>
             <th data-sortable="true">Fecha Evaluación</th>
             <th data-sortable="true">Tipo Evaluación</th>
-            <th data-sortable="true">Profesionales</th>
+            <th data-sortable="true">Profesional 1</th>
+            <th data-sortable="true">Profesional 2</th>
 
         </thead>
         <tbody>
@@ -41,13 +42,21 @@
                         <td>{{tipo[1]}}</td>
                     {% endif %}
                     {% endfor %}
-                <td>
 
-                    {{evaluacion.profesionales}}
+                    {% for prof in profs %}
+                        {% if prof[0] == evaluacion.id_prof %}
+                           <td> {{ prof[1] }}</td>
+                        {% endif %}
+                    {% endfor %}
+                    {% for prof in profs %}
+                        {% if prof[0] == evaluacion.id_prof1 %}
+                            <td> {{ prof[1] }}</td>
+                        {% endif %}
+                    {% endfor %}
                 {% endif %}
 
                 {% endfor %}
-                </td>
+
 
         </tr>
         {% endfor %}

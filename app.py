@@ -1,17 +1,20 @@
+import datetime
+
 from flask import Flask, render_template, request, redirect, url_for, abort,flash
 import pandas as pd
 from werkzeug.urls import url_parse
 
 from config import DeveloperConfig
 from models import Usuarios, db, SegUser, ContactoSegUser, ConsultaSegUser, EvalSegUser, EvaluacionTipo, \
-    ResultadoSegUser, Tipo, AcompSegUser, InfoSeg, InformeSegUser
+    ResultadoSegUser, Tipo, AcompSegUser, InfoSeg, InformeSegUser, Profesionales
 from dataframe_all import dataframe_p1, cambio_baremo_one_p1, p1_dict_one, dataframe_p2, cambio_baremo_one_p2, \
-    dataframe_p3, dataframe_s3, cambio_baremo_one_s3, cambio_baremo_one_p3
+    dataframe_p3, dataframe_s3, cambio_baremo_one_s3, cambio_baremo_one_p3, dataframe_s2, cambio_baremo_one_s2
 
 from forms import SignupForm, LoginForm, ContactoForm, SegForm, ConsultaForm, EvalForm, EvalTipoForm, ResultadoForm, \
-    TipoAcompForm, AcompForm, InfoForm
+    TipoAcompForm, AcompForm, InfoForm, ProfeForm
 from flask_login import LoginManager, current_user, login_user, logout_user, login_required
 from decorators import admin_required
+from sqlalchemy import desc
 
 
 def insert_contacto():
@@ -31,6 +34,7 @@ df1= dataframe_p1()
 df_2 = dataframe_p2()
 df_3 = dataframe_p3()
 df_s3 = dataframe_s3()
+df_s2 = dataframe_s2()
 
 
 @app.errorhandler(404)
@@ -77,6 +81,7 @@ def basc_p2():
 
 @app.route('/add-contact',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def contacto():
     form = ContactoForm()
     if form.validate_on_submit():
@@ -88,6 +93,7 @@ def contacto():
         user = ContactoSegUser(nombre=name, telefono=num)
         db.session.add(user)
         db.session.commit()
+        return redirect(url_for('contacto'))
     return render_template('add_contacto.html',
                            form=form)
 
@@ -191,42 +197,100 @@ def seguimiento(s1_id):
     user = SegUser.query.filter_by(id=s1_id).first()
     contact = ContactoSegUser.query.filter_by(id=user.id_contacto).first()
     consulta = ConsultaSegUser.query.filter_by(id_user=user.id).first()
+    if consulta:
+        prof_consul = Profesionales.query.filter_by(id=consulta.id_prof).first()
+    else:
+        prof_consul = None
+
     evaluacion = EvalSegUser.query.filter_by(id_user=user.id).first()
     if evaluacion:
         tipo_eval = EvaluacionTipo.query.filter_by(id=evaluacion.id_eval).first()
+        prof1 = Profesionales.query.filter_by(id=evaluacion.id_prof).first()
+        prof2 = Profesionales.query.filter_by(id=evaluacion.id_prof1).first()
     else:
         tipo_eval = None
+        prof1 = None
+        prof2 = None
 
     resultado = ResultadoSegUser.query.filter_by(id_user=user.id).first()
     acompa = AcompSegUser.query.filter_by(id_user=user.id).all()
+    profesionales = Profesionales.query.all()
     tipo_acomp = Tipo.query.all()
-    infos = InfoSeg.query.filter_by(id=user.id).order_by(InfoSeg.fecha_creado.desc()).all()
+    infos = InfoSeg.query.filter_by(id_user=user.id).order_by(desc(InfoSeg.fecha_creado))
     return render_template('ficha.html',
-                           contact=contact, user=user, consulta=consulta,
-                           evaluacion=evaluacion, tipo_eval=tipo_eval,
-                           resultado=resultado, acompa=acompa, infos=infos,
-                           tipo_acomp=tipo_acomp)
+                           contact=contact, user=user, consulta=consulta, prof_consul=prof_consul,
+                           evaluacion=evaluacion, tipo_eval=tipo_eval, prof1=prof1,
+                           prof2=prof2, resultado=resultado, profesionales=profesionales,
+                           acompa=acompa, infos=infos, tipo_acomp=tipo_acomp)
+
+
+@app.route('/all-prof/',  methods=["GET"])
+@login_required
+def all_prof():
+    profesionales = Profesionales.query.all()
+    return render_template('all_prof.html',
+                           profesionales=profesionales)
+
+
+@app.route("/add-prof/", methods=['GET', 'POST'])
+@login_required
+@admin_required
+def add_prof():
+    form = ProfeForm()
+    if form.validate_on_submit():
+
+        nombre = form.nombre.data
+        mensaje = "Registro creado"
+        # Creamos el usuario y lo guardamos
+        new_nombre = Profesionales(nombre=nombre)
+        db.session.add(new_nombre)
+        db.session.commit()
+        flash(mensaje)
+        return redirect(url_for('all_prof'))
+    return render_template('add_prof.html',
+                           form=form)
+
+
+@app.route('/edit-prof/<int:pf_id>',  methods=["GET", "POST"])
+@login_required
+@admin_required
+def edit_prof(pf_id):
+    profesional = Profesionales.query.filter_by(id=pf_id).first()
+    form = ProfeForm()
+    if form.validate_on_submit():
+
+        profesional.nombre = form.nombre.data
+        mensaje = "Registro actualizado"
+        # Actualizamos el registro y lo guardamos
+        db.session.commit()
+        flash(mensaje)
+        return redirect(url_for('all_prof'))
+    return render_template('edit_prof.html',
+                           profesional=profesional, form=form)
 
 
 @app.route("/add-consulta/", methods=['GET', 'POST'], defaults={'user_id': None})
 @app.route("/add-consulta/<int:user_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_consulta(user_id):
     form = ConsultaForm()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
+    profs = [(b.id, b.nombre) for b in Profesionales.query.all()]
+    form.profesional.choices = profs
     if user_id:
         form.usuario.data = user_id
 
     if form.validate_on_submit():
 
-        fecha = form.fecha.data
+        fecha = request.form['fecha']
         user = form.usuario.data
         profesional = form.profesional.data
         comentario = form.comentario.data
         mensaje = "Registro creado"
         # Creamos el usuario y lo guardamos
-        new_consulta = ConsultaSegUser(fecha=fecha, profesional=profesional, id_user=user,
+        new_consulta = ConsultaSegUser(fecha=fecha, id_prof=profesional, id_user=user,
                                        comentario=comentario)
         db.session.add(new_consulta)
         db.session.commit()
@@ -241,12 +305,14 @@ def add_consulta(user_id):
 def all_consulta():
     consultas = ConsultaSegUser.query.all()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
+    profs = [(b.id, b.nombre) for b in Profesionales.query.all()]
     return render_template('all_consulta.html',
-                           consultas=consultas, users=users)
+                           consultas=consultas, users=users, profs=profs)
 
 
 @app.route('/edit-consultas/<int:pr_id>',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_consulta(pr_id):
     consultas = ConsultaSegUser.query.filter_by(id=pr_id).first()
     form = ConsultaForm(usuario=consultas.id_user)
@@ -277,6 +343,7 @@ def all_tipo():
 
 @app.route("/add-tipo-eval/", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_tipo_eval():
     form = EvalTipoForm()
     if form.validate_on_submit():
@@ -295,6 +362,7 @@ def add_tipo_eval():
 
 @app.route('/edit-tipos/<int:te_id>',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_tipos(te_id):
     tipos = EvaluacionTipo.query.filter_by(id=te_id).first()
     form = EvalTipoForm()
@@ -316,13 +384,15 @@ def all_evaluacion():
     evaluaciones = EvalSegUser.query.all()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     tipos = [(b.id, b.evaluacion) for b in EvaluacionTipo.query.all()]
+    profs = [(b.id, b.nombre) for b in Profesionales.query.all()]
     return render_template('all_evaluacion.html',
-                           evaluaciones=evaluaciones, users=users, tipos=tipos)
+                           evaluaciones=evaluaciones, users=users, tipos=tipos, profs=profs)
 
 
 @app.route("/add-evaluacion/", methods=['GET', 'POST'], defaults={'user_id': None})
 @app.route("/add-evaluacion/<int:user_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_evaluacion(user_id):
     form = EvalForm()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
@@ -332,16 +402,22 @@ def add_evaluacion(user_id):
 
     tipo = [(b.id, b.evaluacion) for b in EvaluacionTipo.query.all()]
     form.evaluacion.choices = tipo
+    profs = [(b.id, b.nombre) for b in Profesionales.query.all()]
+    form.profesional1.choices = profs
+    form.profesional2.choices = profs
+
     if form.validate_on_submit():
 
         fecha = form.fecha.data
         user = form.usuario.data
-        profesional = form.profesionales.data
+        profesional1 = form.profesional1.data
+        profesional2 = form.profesional2.data
         tipo_eval = form.evaluacion.data
         mensaje = "Registro creado"
 
         # Creamos el usuario y lo guardamos
-        new_evaluacion = EvalSegUser(fecha=fecha, profesionales=profesional, id_user=user, id_eval=tipo_eval)
+        new_evaluacion = EvalSegUser(fecha=fecha, id_prof=profesional1, id_prof1=profesional2,
+                                     id_user=user, id_eval=tipo_eval)
         db.session.add(new_evaluacion)
         db.session.commit()
         flash(mensaje)
@@ -352,23 +428,27 @@ def add_evaluacion(user_id):
 
 @app.route('/edit-evaluacion/<int:ev_id>',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_evaluacion(ev_id):
     evaluacion = EvalSegUser.query.filter_by(id=ev_id).first()
-    form = EvalForm(usuario=evaluacion.id_user, evaluacion=evaluacion.id_eval)
+    form = EvalForm(usuario=evaluacion.id_user, evaluacion=evaluacion.id_eval, profesional1=evaluacion.id_prof,
+                    profesional2=evaluacion.id_prof1)
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
     # form.usuario.data = evaluacion.id_user
     tipo = [(b.id, b.evaluacion) for b in EvaluacionTipo.query.all()]
     form.evaluacion.choices = tipo
-    # form.evaluacion.data = evaluacion.id_eval
+    profs = [(b.id, b.nombre) for b in Profesionales.query.all()]
+    form.profesional1.choices = profs
+    form.profesional2.choices = profs
     if form.validate_on_submit():
 
         evaluacion.fecha = form.fecha.data
-        evaluacion.profesionales = form.profesionales.data
+        evaluacion.id_prof = form.profesional1.data
+        evaluacion.id_prof1 = form.profesional2.data
         evaluacion.id_user = form.usuario.data
         evaluacion.id_eval = form.evaluacion.data
         mensaje = "Registro actualizado"
-        print(form.usuario.data)
         # Actualizamos el registro y lo guardamos
         db.session.commit()
         flash(mensaje)
@@ -389,11 +469,14 @@ def all_resultado():
 @app.route("/add-resultado/", methods=['GET', 'POST'], defaults={'user_id': None})
 @app.route("/add-resultado/<int:user_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_resultado(user_id):
     form = ResultadoForm()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
-    form.usuario.data = user_id
+    if user_id:
+        form.usuario.data = user_id
+
     if form.validate_on_submit():
 
         fecha = form.fecha.data
@@ -416,12 +499,12 @@ def add_resultado(user_id):
 
 @app.route('/edit-resultado/<int:rs_id>',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_resultado(rs_id):
     resultado = ResultadoSegUser.query.filter_by(id=rs_id).first()
-    form = ResultadoForm()
+    form = ResultadoForm(usuario=resultado.id_user)
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
-    form.usuario.data = resultado.id_user
     if form.validate_on_submit():
 
         resultado.fecha = form.fecha.data
@@ -443,12 +526,14 @@ def edit_resultado(rs_id):
 @login_required
 def all_tipo_acomp():
     tipos = Tipo.query.all()
+
     return render_template('all_tipo_acomp.html',
                            tipos=tipos)
 
 
 @app.route("/add-tipo-acomp/", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_tipo_acomp():
     form = TipoAcompForm()
     if form.validate_on_submit():
@@ -467,6 +552,7 @@ def add_tipo_acomp():
 
 @app.route('/edit-tipos-acomp/<int:ta_id>',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_tipos_acomp(ta_id):
     tipos = Tipo.query.filter_by(id=ta_id).first()
     form = TipoAcompForm()
@@ -488,18 +574,24 @@ def all_acomp():
     acomp = AcompSegUser.query.all()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     tipos = [(b.id, b.tipo) for b in Tipo.query.all()]
+    profesionales = Profesionales.query.all()
     return render_template('all_acomp.html',
-                           acomp=acomp, users=users, tipos=tipos)
+                           acomp=acomp, users=users, tipos=tipos, profesionales=profesionales)
 
 
 @app.route("/add-acomp/", methods=['GET', 'POST'], defaults={'user_id': None})
 @app.route("/add-acomp/<int:user_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_acomp(user_id):
     form = AcompForm()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
-    form.usuario.data = user_id
+    profs = [(b.id, b.nombre) for b in Profesionales.query.all()]
+    form.encargado.choices = profs
+    if user_id:
+        form.usuario.data = user_id
+
     tipo = [(b.id, b.tipo) for b in Tipo.query.all()]
     form.tipo_acompa.choices = tipo
     if form.validate_on_submit():
@@ -512,7 +604,7 @@ def add_acomp(user_id):
         comentario = form.comentario.data
         mensaje = "Registro creado"
         # Creamos el usuario y lo guardamos
-        new_acomp = AcompSegUser(fecha_inicio=fecha, encargado=encargado,
+        new_acomp = AcompSegUser(fecha_inicio=fecha, id_prof=encargado,
                                       id_user=user, modalidad=modalidad, comentario=comentario, id_tipo=tipo_acomp)
         db.session.add(new_acomp)
         db.session.commit()
@@ -524,19 +616,20 @@ def add_acomp(user_id):
 
 @app.route('/edit-acomp/<int:ac_id>',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_acomp(ac_id):
     acomp = AcompSegUser.query.filter_by(id=ac_id).first()
-    form = AcompForm()
+    form = AcompForm(usuario=acomp.id_user, tipo_acompa=acomp.id_tipo, encargado=acomp.id_prof)
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
-    form.usuario.data = acomp.id_user
     tipo = [(b.id, b.tipo) for b in Tipo.query.all()]
     form.tipo_acompa.choices = tipo
-    form.tipo_acompa.data = acomp.id_tipo
+    profs = [(b.id, b.nombre) for b in Profesionales.query.all()]
+    form.encargado.choices = profs
     if form.validate_on_submit():
 
         acomp.fecha_inicio = form.fecha_inicio.data
-        acomp.encargado = form.encargado.data
+        acomp.id_prof = form.encargado.data
         acomp.id_user = form.usuario.data
         acomp.id_tipo = form.tipo_acompa.data
         acomp.modalidad = form.modalidad.data
@@ -547,7 +640,7 @@ def edit_acomp(ac_id):
         flash(mensaje)
         return redirect(url_for('all_acomp'))
     return render_template('edit_acomp.html',
-                           acomp=acomp, users=users, tipo=tipo, form=form)
+                           acomp=acomp, users=users, tipo=tipo, profs=profs, form=form)
 
 
 @app.route('/all-info/',  methods=["GET"])
@@ -562,11 +655,14 @@ def all_info():
 @app.route("/add-info/", methods=['GET', 'POST'], defaults={'user_id': None})
 @app.route("/add-info/<int:user_id>", methods=['GET', 'POST'])
 @login_required
+@admin_required
 def add_info(user_id):
     form = InfoForm()
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
-    form.usuario.data = user_id
+    if user_id:
+        form.usuario.data = user_id
+
     if form.validate_on_submit():
 
         fecha = form.fecha_creado.data
@@ -585,12 +681,12 @@ def add_info(user_id):
 
 @app.route('/edit-info/<int:if_id>',  methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit_info(if_id):
     info = InfoSeg.query.filter_by(id=if_id).first()
-    form = InfoForm()
+    form = InfoForm(usuario=info.id_user)
     users = [(b.id, b.nombre) for b in SegUser.query.all()]
     form.usuario.choices = users
-    form.usuario.data = info.id_user
     if form.validate_on_submit():
 
         info.fecha_creado = form.fecha_creado.data
@@ -623,6 +719,17 @@ def basc_s3():
     return render_template('datos_s3.html',
                            columns= df_s3.columns.values,
                            data= list(df_s3.values.tolist()),
+                           link_column="Id",
+                           zip=zip)
+
+
+@app.route('/s2')
+@login_required
+def basc_s2():
+
+    return render_template('datos_s2.html',
+                           columns= df_s2.columns.values,
+                           data= list(df_s2.values.tolist()),
                            link_column="Id",
                            zip=zip)
 
@@ -724,6 +831,31 @@ def informes_s3(s3_id):
     dato_filtrado.columns = dato_filtrado.columns.str.replace(" ", "_")
     dato_dict = dato_filtrado.to_dict('records')
     return render_template('informe_s3.html', datos=dato_dict, lista=baremo_list)
+
+
+@app.route('/informe-s2/<int:s2_id>', methods= ['GET', 'POST'])
+@login_required
+def informes_s2(s2_id):
+    baremo_list = ['General', 'Mujeres', 'Varones']
+    if request.method == 'POST':
+        baremos = []
+        baremo = request.form.get('baremo_s2')
+        baremos.append(baremo)
+        if baremo in baremo_list:
+            datos_cambiados = cambio_baremo_one_s2(df_s2, s2_id, baremos)
+            datos_one= p1_dict_one(df_s2, datos_cambiados, s2_id)
+        else:
+            datos_one = p1_dict_one(df_s2, df_s2, s2_id)
+        return render_template('informe_s2.html', datos=datos_one, lista=baremo_list)
+
+    #p1_id = 2
+    datos = df_s2['Id'] == s2_id
+    dato_filtrado = df_s2[datos]
+    if len(dato_filtrado) == 0:
+        abort(404, description="Upss! Parece que hubo un error")
+    dato_filtrado.columns = dato_filtrado.columns.str.replace(" ", "_")
+    dato_dict = dato_filtrado.to_dict('records')
+    return render_template('informe_s2.html', datos=dato_dict, lista=baremo_list)
 
 
 @app.route('/test-s3')

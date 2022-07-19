@@ -28,17 +28,18 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="feather icon-clock">Fecha</i></span>
 							</div>
+<!--							<input type="date" id="fecha" name="fecha">-->
 							{{ form.fecha(class_= "form-control", size=64) }}
-<!--							<input type="email" class="form-control" placeholder="Email address">-->
-							{% for error in form.fecha.errors %}
-                        		<span style="color: red;">{{ error }}</span>
-                        	{% endfor %}
+<!--&lt;!&ndash;							<input type="email" class="form-control" placeholder="Email address">&ndash;&gt;-->
+<!--							{% for error in form.fecha.errors %}-->
+<!--                        		<span style="color: red;">{{ error }}</span>-->
+<!--                        	{% endfor %}-->
 						</div>
 						<div class="input-group mb-3">
 							<div class="input-group-prepend">
 								<span class="input-group-text"><i class="feather icon-hash"></i>Prof.</span>
 							</div>
-							{{ form.profesional(class_= "form-control", size=64) }}<br>
+							{{ form.profesional(class_= "form-control") }}<a class="btn btn-success" href="{{ url_for('add_prof') }}" role="button">Añadir nuevo</a><br>
 							{% for error in form.profesional.errors %}
 								<span style="color: red;">{{ error }}</span>
 							{% endfor %}

@@ -38,7 +38,11 @@
                 </td>
                 <td>{{ user[1] }}</td>
                 <td>{{acompa.fecha_inicio}}</td>
-                <td>{{acompa.encargado}}</td>
+                    {% for profesional in profesionales %}
+                        {% if profesional.id == acompa.id_prof %}
+                            <td>{{profesional.nombre}}</td>
+                        {% endif %}
+                    {% endfor %}
                     {% for tipo in tipos %}
                         {% if tipo[0] == acompa.id_tipo %}
                         <td>{{tipo[1]}}</td>

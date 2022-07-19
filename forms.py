@@ -28,7 +28,7 @@ class ContactoForm(FlaskForm):
 
 class SegForm(FlaskForm):
     nombre = StringField('Nombre', validators=[DataRequired(), Length(max=50)], render_kw={"placeholder": "Nombre"})
-    edad = IntegerField('Edad',validators=[DataRequired()], render_kw={"placeholder": "11"})
+    edad = IntegerField('Edad',validators=[DataRequired()], render_kw={"placeholder": "edad"})
     grado = StringField('Grado', validators=[DataRequired(), Length(max=40)], render_kw={"placeholder": "Grado"})
     localidad = StringField('Localidad', validators=[Length(max=60)],
                             render_kw={"placeholder": "Localidad"})
@@ -39,8 +39,8 @@ class SegForm(FlaskForm):
 
 
 class ConsultaForm(FlaskForm):
-    fecha = DateField('Fecha', render_kw={f"placeholder": f"{fecha_actual()}"})
-    profesional = StringField('Profesional', validators=[ Length(max=40)], render_kw={"placeholder": "Lic. Juan Perez"})
+    fecha = StringField('Fecha', render_kw={f"placeholder": f"{fecha_actual()}"})
+    profesional = SelectField('Profesional', coerce=int)
     comentario = StringField('Comentario', validators=[Length(max=100)], render_kw={"placeholder": "Comentario..."})
     usuario = SelectField('Usuario', coerce=int)
     submit = SubmitField('Registrar')
@@ -53,8 +53,8 @@ class EvalTipoForm(FlaskForm):
 
 class EvalForm(FlaskForm):
     fecha = DateField('Fecha', render_kw={f"placeholder": f"{fecha_actual()}"})
-    profesionales = StringField('Profesionales', validators=[Length(max=100)],
-                                render_kw={"placeholder": "Lic. Juan Perez"})
+    profesional1 = SelectField('Profesional 1', coerce=int)
+    profesional2 = SelectField('Profesional 2', coerce=int)
     usuario = SelectField('Usuario', coerce=int)
     evaluacion = SelectField('Evaluacion', coerce=int)
     submit = SubmitField('Registrar')
@@ -82,9 +82,8 @@ class ResultadoForm(FlaskForm):
 
 
 class AcompForm(FlaskForm):
-    fecha_inicio = DateField('Fecha', render_kw={f"placeholder": f"{fecha_actual()}"})
-    encargado = StringField('Encargado', validators=[Length(max=50)],
-                            render_kw={"placeholder": "Lic. Ana Díaz"})
+    fecha_inicio = StringField('Fecha', render_kw={f"placeholder": f"{fecha_actual()}"})
+    encargado = SelectField('Profesional', coerce=int)
     modalidad = StringField('Modalidad', validators=[Length(max=20)],
                             render_kw={"placeholder": "Anual"})
     comentario = TextAreaField('Comentario')
@@ -102,4 +101,9 @@ class InfoForm(FlaskForm):
     fecha_creado = DateField('Fecha', render_kw={f"placeholder": f"{fecha_actual()}"})
     info = TextAreaField('Comentario')
     usuario = SelectField('Usuario', coerce=int)
+    submit = SubmitField('Registrar')
+
+
+class ProfeForm(FlaskForm):
+    nombre = StringField('Nombre', validators=[Length(max=50), DataRequired()], render_kw={"placeholder": "Nombre"})
     submit = SubmitField('Registrar')

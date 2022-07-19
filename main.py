@@ -7,7 +7,7 @@ def print_hi(name):
     print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
 
 
-formato='%m/%d/%Y'
+"""formato='%m/%d/%Y'
 fecha = "04/04/2021"
 fecha_creada = datetime.datetime.strptime(fecha, formato).date()
 url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ7vGtlwPr73WmlOAKR3lK4223ytE9mQzodJJtABdyewRjeLpc91aJv-9MeGPEzIsJoBfYFG1h_HXJG/pubhtml"
@@ -24,10 +24,9 @@ try:
     df_info['Edad'] = df_info['Edad'].astype(int)
 
 except:
-    print("Hubo un error")
+    print("Hubo un error")"""
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print(df_info['Fecha de nacimiento'])
-    print(df_info['dias'])
+    print(datetime.datetime.now())
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

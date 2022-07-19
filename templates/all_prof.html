@@ -1,11 +1,11 @@
 {% extends 'base2.html' %}
-{% block title %}Consultas{% endblock %}
+{% block title %}Nombre profesionales{% endblock %}
 
 {% block body %}
 <!-- [ auth-signin ] start -->
 <div class="container">
-    <h1 class="h1 align-items-center">Usuarios Primera consulta</h1>
-    <a class="btn btn-primary" href="{{ url_for('add_consulta') }}" role="button">Añadir consulta</a>
+    <h1 class="h1 align-items-center">Nombre profesionales</h1>
+    <a class="btn btn-primary" href="{{ url_for('add_prof') }}" role="button">Añadir nombre</a>
     <table
           id="table"
           data-pagination="true"
@@ -18,38 +18,18 @@
         <thead>
             <th>Acciones</th>
 
-            <th data-sortable="true">Nombre</th>
-            <th data-sortable="true">Fecha Consulta</th>
-            <th data-sortable="true">Profesional</th>
-            <th data-sortable="true">Comentario</th>
+            <th data-sortable="true">Nombre Profesional</th>
 
         </thead>
         <tbody>
-        {% for consulta in consultas %}
+        {% for profesional in profesionales %}
         <tr>
 
                 <td>
-                {% for user in users %}
-                {% if user[0] == consulta.id_user %}
-                    {% if current_user.is_admin %}
-                    <a href="{{ url_for('edit_consulta',pr_id=consulta.id) }}" class="btn btn-success btn-circle" role="button" ><i class="far fa-edit">Editar</i></a>
-                    {% endif %}
+                    <a href="{{ url_for('edit_prof',pf_id=profesional.id) }}" class="btn btn-success btn-circle btn-sm" role="button" ><i class="far fa-edit">Editar</i></a>
+
                 </td>
-                <td>{{ user[1] }}</td>
-                {% endif %}
-                {% endfor %}
-                <td>{{consulta.fecha}}</td>
-                <td>
-                {% for prof in profs %}
-                    {% if prof[0] == consulta.id_prof %}
-                        {{ prof[1] }}
-                    {% endif %}
-                {% endfor %}
-                </td>
-                <td>{{consulta.comentario}}</td>
-
-
-
+                <td>{{ profesional.nombre}}</td>
 
         </tr>
         {% endfor %}

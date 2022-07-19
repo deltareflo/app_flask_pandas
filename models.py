@@ -1,6 +1,6 @@
 from shared import db
 import datetime
-from sqlalchemy import column, String, Integer, ForeignKey, Boolean, Text, Date
+from sqlalchemy import column, String, Integer, ForeignKey, Boolean, Text, Date, func
 from sqlalchemy_utils import ChoiceType
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
@@ -15,8 +15,9 @@ def fecha_actual():
 
 class TimestampMixin(object):
     created = db.Column(
-        db.DateTime, nullable=False, default=datetime.datetime.utcnow)
-    updated = db.Column(db.DateTime, onupdate=datetime.datetime.utcnow)
+        db.DateTime, nullable=False, server_default=func.now())
+    updated = db.Column(db.DateTime, onupdate=func.now())
+    status = db.Column(Boolean, default=True)
 
 
 class IntEnum(db.TypeDecorator):
@@ -83,7 +84,7 @@ class Examenes(db.Model):
     item3= db.Column(Integer)
 
 
-class SegUser(db.Model, UserMixin):
+class SegUser(db.Model, UserMixin, TimestampMixin):
     __tablename__= 'seguimiento_user'
 
     id = db.Column(Integer, primary_key=True)
@@ -93,7 +94,6 @@ class SegUser(db.Model, UserMixin):
     localidad = db.Column(String(length=60))
     email = db.Column(String(length=150))
     carpeta = db.Column(String(length=150))
-    status = db.Column(Boolean, default=True)
     # ForeignKey
     id_contacto = db.Column(Integer, ForeignKey('contacto_user.id'))
     contacto = db.relationship('ContactoSegUser', backref='seguimiento_user', lazy=True)
@@ -102,7 +102,7 @@ class SegUser(db.Model, UserMixin):
         return f'<User {self.nombre}>'
 
 
-class ContactoSegUser(db.Model, UserMixin):
+class ContactoSegUser(db.Model, TimestampMixin):
     __tablename__ = 'contacto_user'
 
     id = db.Column(Integer, primary_key=True)
@@ -113,37 +113,42 @@ class ContactoSegUser(db.Model, UserMixin):
         return f'<User {self.nombre}>'
 
 
-class ConsultaSegUser(db.Model, UserMixin):
+class ConsultaSegUser(db.Model, TimestampMixin):
     __tablename__ = 'consulta_user'
 
     id = db.Column(Integer, primary_key=True)
-    fecha = db.Column(Date)
-    profesional = db.Column(String(length=40))
+    fecha = db.Column(String(length=15))
+    # profesional = db.Column(String(length=40))
     comentario = db.Column(String(length=100))
     id_user = db.Column(Integer, ForeignKey('seguimiento_user.id'))
     user = db.relationship('SegUser', backref='consulta_user', lazy=True)
+    id_prof = db.Column(Integer, ForeignKey('profesionales.id'))
+    prof = db.relationship('Profesionales', backref='consulta_prof', lazy=True)
 
     def __repr__(self):
         return f'<Profesional {self.profesional}>'
 
 
-class EvalSegUser(db.Model, UserMixin):
+class EvalSegUser(db.Model, TimestampMixin):
     __tablename__ = 'evaluacion_user'
 
     id = db.Column(Integer, primary_key=True)
     fecha = db.Column(Date)
-    profesionales = db.Column(String(length=100))
+    # profesionales = db.Column(String(length=100))
     # Foreignkey
     id_user = db.Column(Integer, ForeignKey('seguimiento_user.id'))
     user = db.relationship('SegUser', backref='eval_user', lazy=True)
     id_eval = db.Column(Integer, ForeignKey('tipos_eval.id'))
     evaluacion = db.relationship('EvaluacionTipo', backref='tipos_eval', lazy=True)
+    id_prof = db.Column(Integer, ForeignKey('profesionales.id'))
+    prof = db.relationship('Profesionales', backref='eval_prof', lazy=True)
+    id_prof1 = db.Column(Integer)
 
     def __repr__(self):
         return f'<Profesional {self.profesionales}>'
 
 
-class EvaluacionTipo(db.Model, UserMixin):
+class EvaluacionTipo(db.Model, TimestampMixin):
     __tablename__ = 'tipos_eval'
 
     id = db.Column(Integer, primary_key=True)
@@ -153,7 +158,8 @@ class EvaluacionTipo(db.Model, UserMixin):
         return f'<Evaluacion {self.evaluacion}>'
 
 
-class InformeSegUser(db.Model, UserMixin):
+# esta clase no va
+class InformeSegUser(db.Model, TimestampMixin):
     __tablename__ = 'informe_user'
     # Unir a la tabla resultado y relacionar con evalauacion
     id = db.Column(Integer, primary_key=True)
@@ -167,7 +173,7 @@ class InformeSegUser(db.Model, UserMixin):
         return f'<Fecha {self.fecha}>'
 
 
-class ResultadoSegUser(db.Model, UserMixin):
+class ResultadoSegUser(db.Model, TimestampMixin):
     __tablename__ = 'resultado_user'
 
     id = db.Column(Integer, primary_key=True)
@@ -185,12 +191,12 @@ class ResultadoSegUser(db.Model, UserMixin):
         return f'<Resultado {self.aa_cc}>'
 
 
-class AcompSegUser(db.Model, UserMixin):
+class AcompSegUser(db.Model, TimestampMixin):
     __tablename__ = 'acompanhar_user'
 
     id = db.Column(Integer, primary_key=True)
-    fecha_inicio = db.Column(Date)
-    encargado = db.Column(String(length=50))
+    fecha_inicio = db.Column(String(length=20))
+    # encargado = db.Column(String(length=50))
     modalidad = db.Column(String(length=20))
     comentario = db.Column(Text)
     # Foreignkey
@@ -198,12 +204,14 @@ class AcompSegUser(db.Model, UserMixin):
     user = db.relationship('SegUser', backref='acomp_user', lazy=True)
     id_tipo = db.Column(Integer, ForeignKey('tipo_acompanamiento.id'))
     tipo = db.relationship('Tipo', backref='tipo_acompanamiento', lazy=True)
+    id_prof = db.Column(Integer, ForeignKey('profesionales.id'))
+    prof = db.relationship('Profesionales', backref='user_prof', lazy=True)
 
     def __repr__(self):
         return f'<Encargada {self.encargado}>'
 
 
-class Tipo(db.Model, UserMixin):
+class Tipo(db.Model, TimestampMixin):
     __tablename__ = 'tipo_acompanamiento'
 
     id = db.Column(Integer, primary_key=True)
@@ -213,7 +221,7 @@ class Tipo(db.Model, UserMixin):
         return f'<Tipo {self.tipo}>'
 
 
-class InfoSeg(db.Model, UserMixin):
+class InfoSeg(db.Model, TimestampMixin):
     __tablename__ = 'info_seguimiento'
 
     id = db.Column(Integer, primary_key=True)
@@ -224,3 +232,13 @@ class InfoSeg(db.Model, UserMixin):
 
     def __repr__(self):
         return f'<Info {self.info}>'
+
+
+class Profesionales(db.Model, TimestampMixin):
+    __tablename__ = 'profesionales'
+
+    id = db.Column(Integer, primary_key=True)
+    nombre = db.Column(String(length=50), nullable=False)
+
+    def __repr__(self):
+        return f'<Nombre {self.nombre}>'
