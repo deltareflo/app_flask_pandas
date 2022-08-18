@@ -655,8 +655,7 @@ def date_diff(date1, date2):
 
 
 def cargar_dataframe(url1):
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRrEpOBKtTnticMTM5BSb2MbsMpkU9hkaAVIjNhUz" \
-          "-cWbMEvAINexTz7aL1ql0rfYGBcT0PQxh88MyC/pubhtml?gid=74737359&single=true "
+    url = ""
 
     # Se lee la página web, el argumento header=1 indica que el nombre de las columnas está en la segunda fila
     # El encoding="UTF-8" asegura que se reconozca los acentos y la ñ
@@ -667,8 +666,7 @@ def cargar_dataframe(url1):
 
 def dataframe_calculos_iniciales(url2, prueba="P1"):
     # Se declara la url de la cual se va a leer los datos
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRrEpOBKtTnticMTM5BSb2MbsMpkU9hkaAVIjNhUz" \
-          "-cWbMEvAINexTz7aL1ql0rfYGBcT0PQxh88MyC/pubhtml?gid=74737359&single=true "
+    url = ""
     df = cargar_dataframe(url2)
     df_info = df.iloc[1:, :8]
 
@@ -711,8 +709,7 @@ def dataframe_calculos_iniciales(url2, prueba="P1"):
 def dataframe_s3():
     # Se declara la url de la cual se va a leer los datos
 
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR25wTAMvC1MoJFfbregZx1ngybD6mzYA3u" \
-          "-hytaRMvlYWM4RKJC7yYqr2KWzfYuEXcrvBE4-pmcGyA/pubhtml "
+    url = ""
     df = dataframe_calculos_iniciales(url, prueba="S3")
     # df = recodifica_var(len(df.columns))
     df_info = df.iloc[:, :11]
@@ -822,8 +819,7 @@ def dataframe_s3():
 def dataframe_s2():
     # Se declara la url de la cual se va a leer los datos
 
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR1-GbOxaijA7BRMixTuoRynuQiYXyfjsPUlGx5CzHm" \
-          "-TSTev5PWP03YEQLrR00aMRKxfsof3fc4ul2/pubhtml "
+    url = ""
     df = dataframe_calculos_iniciales(url, prueba="S2")
     # df = recodifica_var(len(df.columns))
     df_info = df.iloc[:, :11]
@@ -921,8 +917,7 @@ def dataframe_s2():
 def dataframe_p3():
     # Se declara la url de la cual se va a leer los datos
 
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX" \
-          "-1vRgBOXN5DEWrbtzdLKE5iHShqOWphkRzhkD08EyIJ5E51if_2tO531nNvC9_1oG4Bz8bpMKF9Pl-1bF/pubhtml "
+    url = ""
     df = dataframe_calculos_iniciales(url)
     # df = recodifica_var(len(df.columns))
     df_info = df.iloc[:, :11]
@@ -1006,8 +1001,7 @@ def dataframe_p3():
 def dataframe_p2():
     # Se declara la url de la cual se va a leer los datos
 
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ7vGtlwPr73WmlOAKR3lK4223ytE9mQzodJJtABdyewRjeLpc91aJv" \
-          "-9MeGPEzIsJoBfYFG1h_HXJG/pubhtml "
+    url = ""
     df = dataframe_calculos_iniciales(url)
     # df = recodifica_var(len(df.columns))
     df_info = df.iloc[:, :11]
@@ -1140,8 +1134,7 @@ def dataframe_p2():
 
 def dataframe_p1():
     # Se declara la url de la cual se va a leer los datos
-    url = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRrEpOBKtTnticMTM5BSb2MbsMpkU9hkaAVIjNhUz" \
-          "-cWbMEvAINexTz7aL1ql0rfYGBcT0PQxh88MyC/pubhtml?gid=74737359&single=true "
+    url = ""
     df = dataframe_calculos_iniciales(url)
     # df = recodifica_var(len(df.columns))
     df_info = df.iloc[:, :11]
